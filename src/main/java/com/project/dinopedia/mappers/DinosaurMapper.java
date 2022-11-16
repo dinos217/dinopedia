@@ -6,7 +6,7 @@ import com.project.dinopedia.entities.Dinosaur;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface DinosaurToDinosaurDto {
+public interface DinosaurMapper {
 
     DinosaurDto dinosaurToDinosaurDto(Dinosaur dinosaur);
     Dinosaur dinosaurDtoToDinosaur(DinosaurDto dinosaurDto);
