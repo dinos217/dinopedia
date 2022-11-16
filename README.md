@@ -1,1 +1,1 @@
-# dinopedia
+# Dinopedia
