@@ -11,8 +11,8 @@ import java.util.List;
 @Table(name = "dinosaur")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Dinosaur implements Serializable {
 
     @Id
@@ -36,4 +36,7 @@ public class Dinosaur implements Serializable {
 
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL)
     private List<DinosaurPicture> pictures = new ArrayList<>();
+
+    @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> likes = new ArrayList<>();
 }

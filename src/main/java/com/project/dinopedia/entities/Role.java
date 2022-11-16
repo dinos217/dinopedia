@@ -1,9 +1,6 @@
 package com.project.dinopedia.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,8 +11,8 @@ import java.util.List;
 @Table(name = "role")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Role implements Serializable {
 
     @Id

@@ -1,9 +1,6 @@
 package com.project.dinopedia.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,8 +9,8 @@ import java.io.Serializable;
 @Table(name = "dinosaur_picture")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class DinosaurPicture implements Serializable {
 
     @Id
