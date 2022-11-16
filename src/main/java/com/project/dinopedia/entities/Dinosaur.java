@@ -35,7 +35,7 @@ public class Dinosaur implements Serializable {
     private String size;
 
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL)
-    private List<DinosaurPicture> pictures = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> likes = new ArrayList<>();

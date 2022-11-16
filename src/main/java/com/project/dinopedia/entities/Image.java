@@ -6,12 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "dinosaur_picture")
+@Table(name = "dinosaur_image")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DinosaurPicture implements Serializable {
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
