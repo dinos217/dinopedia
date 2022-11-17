@@ -17,9 +17,6 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "filename")
-    private String filename;
-
     @Column(name = "name")
     private String name;
 
@@ -27,7 +24,7 @@ public class Image implements Serializable {
     private String type;
 
     @Lob
-    @Column(name = "image_data", length = 1000)
+    @Column(name = "image_data")
     private byte[] imageData;
 
     @ManyToOne
