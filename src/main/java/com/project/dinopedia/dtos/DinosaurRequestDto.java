@@ -1,6 +1,5 @@
 package com.project.dinopedia.dtos;
 
-import com.project.dinopedia.entities.Image;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;

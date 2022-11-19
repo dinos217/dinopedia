@@ -3,11 +3,12 @@ package com.project.dinopedia.services;
 import com.project.dinopedia.dtos.DinosaurDto;
 import com.project.dinopedia.dtos.DinosaurRequestDto;
 import com.project.dinopedia.entities.Dinosaur;
-import com.project.dinopedia.entities.Image;
+import com.project.dinopedia.enums.EatingClass;
+import com.project.dinopedia.enums.Size;
 import com.project.dinopedia.exceptions.BadRequestException;
 import com.project.dinopedia.mappers.DinosaurMapper;
 import com.project.dinopedia.repositories.DinosaurRepository;
-import com.project.dinopedia.repositories.ImageRepository;
+import com.project.dinopedia.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +18,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class DinosaurServiceImpl implements DinosaurService {
 
-    public static final int IMAGES_MAX_NUM = 2;
+    private static final int IMAGES_MAX_NUM = 2;
     private DinosaurRepository dinosaurRepository;
-    private ImageRepository imageRepository;
     private DinosaurMapper dinosaurMapper = Mappers.getMapper(DinosaurMapper.class);
 
     @Autowired
-    public DinosaurServiceImpl(DinosaurRepository dinosaurRepository, ImageRepository imageRepository) {
+    public DinosaurServiceImpl(DinosaurRepository dinosaurRepository) {
         this.dinosaurRepository = dinosaurRepository;
-        this.imageRepository = imageRepository;
     }
 
     @Transactional
@@ -48,10 +46,10 @@ public class DinosaurServiceImpl implements DinosaurService {
         if (dinosaurRequestDto.getImages().size() > IMAGES_MAX_NUM)
             throw new BadRequestException("Maximum number of files is 2");
 
-        dinosaur.setImages(buildImages(dinosaurRequestDto.getImages()));
-
+        dinosaur.setImages(Utils.buildImages(dinosaurRequestDto.getImages()));
+        DinosaurDto dinosaurDto = dinosaurMapper.dinosaurToDinosaurDto(dinosaurRepository.save(dinosaur));
         log.info("New Dinosaur " + dinosaur.getName() + " was saved successfully");
-        return dinosaurMapper.dinosaurToDinosaurDto(dinosaurRepository.save(dinosaur));
+        return dinosaurDto;
     }
 
 
@@ -63,10 +61,10 @@ public class DinosaurServiceImpl implements DinosaurService {
                 .orElseThrow(() -> new BadRequestException("Dinosaur not found"));
 
         dinosaur.setName(dinosaurDto.getName());
-        dinosaur.setSize(dinosaur.getSize());
-        dinosaur.setColour(dinosaur.getColour());
-        dinosaur.setPeriod(dinosaur.getPeriod());
-        dinosaur.setEatingClass(dinosaur.getEatingClass());
+        dinosaur.setSize(dinosaurDto.getSize());
+        dinosaur.setColour(dinosaurDto.getColour());
+        dinosaur.setPeriod(dinosaurDto.getPeriod());
+        dinosaur.setEatingClass(dinosaurDto.getEatingClass());
 
         return dinosaurMapper.dinosaurToDinosaurDto(dinosaurRepository.save(dinosaur));
     }
@@ -88,58 +86,34 @@ public class DinosaurServiceImpl implements DinosaurService {
         return buildResponseListPaged(pageable, allDinosaurs);
     }
 
-    @Transactional
     @Override
-    public void addImageToDinosaur(Long dinoId, List<MultipartFile> files) {
+    public List<byte[]> getDinosaurImages(String name) {
 
-        Dinosaur dinosaur = dinosaurRepository.findById(dinoId)
-                .orElseThrow(() -> new BadRequestException("Dinosaur with id " + dinoId + " does not exist."));
+        Dinosaur dinosaur = dinosaurRepository.findByName(name)
+                .orElseThrow(() -> new BadRequestException("Dinosaur not found."));
 
-        if (files.size() > IMAGES_MAX_NUM) throw new BadRequestException("Maximum number of files is 2");
-
-        if (dinosaur.getImages().size() == IMAGES_MAX_NUM) throw new BadRequestException("This dinosaur has already " +
-                "2 images.");
-
-        if (dinosaur.getImages().size() + files.size() > IMAGES_MAX_NUM)
-            throw new BadRequestException("This dinosaur has already 1 image and can accept only 1 more.");
-
-        List<Image> imagesToAdd = buildImages(files);
-        imageRepository.saveAll(imagesToAdd
-                .stream()
-                .peek(image -> image.setDinosaur(dinosaur))
-                .toList());
-    }
-
-    @Override
-    public void removeImage(Long id) {
-        //todo: move this to image service etc..
-    }
-
-    @Override
-    public void removeAllImagesOfDinosaur(Long dinosaurId) {
-
-    }
-
-    private List<Image> buildImages(List<MultipartFile> files) {
-
-        if (!CollectionUtils.isEmpty(files)) {
-            List<Image> dinoImages = new ArrayList<>();
-            for (MultipartFile file : files) {
-                Image image = new Image();
-//                image.setDinosaur(dinosaur);
-                image.setName(file.getName());
-                image.setType(file.getContentType());
-                try {
-                    image.setImageData(file.getBytes());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                dinoImages.add(image);
-            }
-            return dinoImages;
+        if (!CollectionUtils.isEmpty(dinosaur.getImages())) {
+            return dinosaur.getImages().stream()
+                    .map(image -> Utils.decompressImage(image.getImageData()))
+                    .collect(Collectors.toList());
         } else
-            throw new BadRequestException("List of images is empty.");
+            throw new BadRequestException("Oops! This dinosaur has no associated images.");
     }
+
+    @Override
+    public List<String> getDinosaurEatingClasses() {
+        return Arrays.stream(EatingClass.values())
+                .map(EatingClass::getLabel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getDinosaurSizes() {
+        return Arrays.stream(Size.values())
+                .map(Size::getLabel)
+                .collect(Collectors.toList());
+    }
+
 
     private Page<DinosaurDto> buildResponseListPaged(Pageable pageable, Page<Dinosaur> dinosaursFromDb) {
 

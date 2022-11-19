@@ -20,9 +20,9 @@ public interface DinosaurService {
 
     Page<DinosaurDto> findAll(Pageable pageable);
 
-    void addImageToDinosaur(Long id, List<MultipartFile> files);
+    List<byte[]> getDinosaurImages(String name);
 
-    void removeImage(Long id);
+    List<String> getDinosaurEatingClasses();
 
-    void removeAllImagesOfDinosaur(Long dinosaurId);
+    List<String> getDinosaurSizes();
 }
