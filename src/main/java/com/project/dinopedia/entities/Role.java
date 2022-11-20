@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "role")
+@Table(name = "`role`")
 @Getter
 @Setter
 @NoArgsConstructor

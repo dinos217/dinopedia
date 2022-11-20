@@ -11,4 +11,8 @@ public interface ImageService {
     void addImagesToDinosaur(Long id, List<MultipartFile> files);
 
     void delete(Long id);
+
+    byte[] findImageByName(String name);
+
+    String findImageTypeByName(String name);
 }

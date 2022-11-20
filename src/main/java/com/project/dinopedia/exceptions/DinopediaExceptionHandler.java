@@ -18,7 +18,7 @@ public class DinopediaExceptionHandler {
     @ResponseBody
     public ResponseEntity<DinopediaApiMessage> processValidationError(InvalidRequestException e) {
 
-        log.info("ERROR --> " + e.getMessage());
+        log.warn("CONFLICT --> " + e.getMessage());
 
         DinopediaApiMessage response = buildMovieramaErrorMessage(e, HttpStatus.CONFLICT);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
@@ -29,7 +29,7 @@ public class DinopediaExceptionHandler {
     @ResponseBody
     public ResponseEntity<DinopediaApiMessage> processValidationError(BadRequestException e) {
 
-        log.info("ERROR --> " + e.getMessage());
+        log.warn("ERROR --> " + e.getMessage());
 
         DinopediaApiMessage response = buildMovieramaErrorMessage(e, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

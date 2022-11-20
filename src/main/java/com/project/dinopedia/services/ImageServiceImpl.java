@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
         if (dinosaur.getImages().size() + files.size() > IMAGES_MAX_NUM)
             throw new BadRequestException("This dinosaur has already 1 image and can accept only 1 more");
 
-        List<Image> imagesToAdd = Utils.buildImages(files);
+        List<Image> imagesToAdd = Utils.buildImages(dinosaur, files);
         imageRepository.saveAll(imagesToAdd
                 .stream()
                 .peek(image -> image.setDinosaur(dinosaur))
@@ -56,9 +56,23 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void delete(Long id) {
 
-        Image image = imageRepository.findById(id).orElseThrow(() -> new BadRequestException("Image was not found"));
+        Image image = imageRepository.findById(id).orElseThrow(() -> new BadRequestException("No Images found."));
 
         imageRepository.delete(image);
         log.info("Image with id " + id + " was deleted");
+    }
+
+    @Transactional
+    @Override
+    public byte[] findImageByName(String name) {
+        Image imageFromDb = imageRepository.findByName(name).orElseThrow(() -> new BadRequestException("No image found."));
+        return Utils.decompressImage(imageFromDb.getImageData());
+    }
+
+    @Transactional
+    @Override
+    public String findImageTypeByName(String name) {
+        Image imageFromDb = imageRepository.findByName(name).orElseThrow(() -> new BadRequestException("No image found."));
+        return imageFromDb.getType();
     }
 }

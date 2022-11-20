@@ -1,5 +1,6 @@
 package com.project.dinopedia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,18 +26,19 @@ public class Dinosaur implements Serializable {
     @Column(name = "eating_class")
     private String eatingClass;
 
-    @Column(name = "typical_colour")
-    private String colour;
-
     @Column(name = "period")
     private String period;
 
-    @Column(name = "average_size")
+    @Column(name = "size")
     private String size;
 
-    @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
+    @ToString.Exclude
+    @JsonIgnore
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> likes = new ArrayList<>();
 }

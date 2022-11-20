@@ -1,12 +1,13 @@
 package com.project.dinopedia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "dinosaur_image")
+@Table(name = "image")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,5 +29,6 @@ public class Image implements Serializable {
     private byte[] imageData;
 
     @ManyToOne
+    @JsonIgnore
     private Dinosaur dinosaur;
 }

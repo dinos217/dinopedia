@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface DinosaurService {
 
-    DinosaurDto save(DinosaurRequestDto dinosaurRequestDto);
+    DinosaurDto save(DinosaurRequestDto dinosaurRequestDto, List<MultipartFile> images);
 
     DinosaurDto update(DinosaurDto dinosaurDto);
 

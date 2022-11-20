@@ -14,7 +14,6 @@ public class DinosaurDto {
     private Long id;
     private String name;
     private String eatingClass;
-    private String colour;
     private String period;
     private String size;
     private List<Image> images;

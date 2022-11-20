@@ -1,5 +1,6 @@
 package com.project.dinopedia.utils;
 
+import com.project.dinopedia.entities.Dinosaur;
 import com.project.dinopedia.entities.Image;
 import com.project.dinopedia.exceptions.BadRequestException;
 import org.springframework.util.CollectionUtils;
@@ -14,14 +15,15 @@ import java.util.zip.Inflater;
 
 public class Utils {
 
-    public static List<Image> buildImages(List<MultipartFile> files) {
+    public static List<Image> buildImages(Dinosaur dinosaur, List<MultipartFile> files) {
 
         if (!CollectionUtils.isEmpty(files)) {
             List<Image> dinoImages = new ArrayList<>();
             for (MultipartFile file : files) {
                 Image image = new Image();
-                image.setName(file.getName());
+                image.setName(file.getOriginalFilename());
                 image.setType(file.getContentType());
+                image.setDinosaur(dinosaur);
                 try {
                     image.setImageData(compressImage(file.getBytes()));
                 } catch (IOException e) {

@@ -23,8 +23,9 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping(value = "/add-to-dinosaur/{dinoId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<String> addImagesToDinosaur(@PathVariable Long dinoId, @RequestPart List<MultipartFile> images) {
+    @PostMapping(value = "/add-to-dinosaur", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<String> addImagesToDinosaur(@RequestParam Long dinoId,
+                                               @RequestPart(name = "images") List<MultipartFile> images) {
         log.info("Started saving images to Dinosaur " + dinoId);
         imageService.addImagesToDinosaur(dinoId, images);
         return ResponseEntity.status(HttpStatus.OK).body("Image(s) were saved successfully");
@@ -35,5 +36,13 @@ public class ImageController {
         log.info("Started deleting image...");
         imageService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Image was deleted successfully");
+    }
+
+    @GetMapping("/{name}")
+    ResponseEntity<byte[]> getImage(@PathVariable("name") String name) {
+        log.info("Started getting image " + name);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf(imageService.findImageTypeByName(name)))
+                .body(imageService.findImageByName(name));
     }
 }

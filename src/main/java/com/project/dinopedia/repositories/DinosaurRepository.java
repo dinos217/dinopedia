@@ -14,4 +14,6 @@ public interface DinosaurRepository extends JpaRepository<Dinosaur, Long> {
     Page<Dinosaur> findAll(Pageable pageable);
 
     Optional<Dinosaur> findByName(String name);
+
+    Boolean existsByName(String name);
 }
