@@ -25,4 +25,6 @@ public interface DinosaurService {
     List<String> getDinosaurEatingClasses();
 
     List<String> getDinosaurSizes();
+
+    List<String> getDinosaurPeriods();
 }

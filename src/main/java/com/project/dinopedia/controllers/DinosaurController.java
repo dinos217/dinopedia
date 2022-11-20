@@ -62,11 +62,19 @@ public class DinosaurController {
 
     @GetMapping(value = "/eating-classes")
     ResponseEntity<List<String>> getAllEatingClasses() {
+        log.info("Started finding all dinosaur eating classes...");
         return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.getDinosaurEatingClasses());
     }
 
     @GetMapping(value = "/sizes")
     ResponseEntity<List<String>> getAllSizes() {
+        log.info("Started finding all dinosaur sizes...");
+        return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.getDinosaurSizes());
+    }
+
+    @GetMapping(value = "/periods")
+    ResponseEntity<List<String>> getAllPeriods() {
+        log.info("Started finding all dinosaur periods...");
         return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.getDinosaurSizes());
     }
 }

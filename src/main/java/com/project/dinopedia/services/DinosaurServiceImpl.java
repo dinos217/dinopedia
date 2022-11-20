@@ -114,6 +114,12 @@ public class DinosaurServiceImpl implements DinosaurService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<String> getDinosaurPeriods() {
+        return Arrays.stream(Size.values())
+                .map(Size::getLabel)
+                .collect(Collectors.toList());
+    }
 
     private Page<DinosaurDto> buildResponseListPaged(Pageable pageable, Page<Dinosaur> dinosaursFromDb) {
 
