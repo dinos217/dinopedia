@@ -31,10 +31,10 @@ public class VoteServiceImpl implements VoteService {
     public VoteDto save(VoteRequestDto voteRequestDto) {
 
         User user = userRepository.findById(voteRequestDto.getUserId())
-                .orElseThrow(() -> new BadRequestException("User with id " + voteRequestDto.getUserId() + " does not exist."));
+                .orElseThrow(() -> new BadRequestException("User with id " + voteRequestDto.getUserId() + " does not exist"));
 
         Dinosaur dinosaur = dinosaurRepository.findById(voteRequestDto.getDinosaurId())
-                .orElseThrow(() -> new BadRequestException("Dinosaur with id " + voteRequestDto.getDinosaurId() + " does not exist."));
+                .orElseThrow(() -> new BadRequestException("Dinosaur with id " + voteRequestDto.getDinosaurId() + " does not exist"));
 
         if (!voteRepository.existsByUserAndDinosaur(user, dinosaur)) {
             Vote vote = new Vote();
@@ -44,7 +44,7 @@ public class VoteServiceImpl implements VoteService {
 
             return buildVoteDto(voteRepository.save(vote));
         } else {
-            throw new InvalidRequestException("User " + user.getUsername() + " has already liked this dinosaur.");
+            throw new InvalidRequestException("User " + user.getUsername() + " has already liked this dinosaur");
         }
     }
 

@@ -34,15 +34,15 @@ public class ImageServiceImpl implements ImageService {
     public void addImagesToDinosaur(Long dinoId, List<MultipartFile> files) {
 
         Dinosaur dinosaur = dinosaurRepository.findById(dinoId)
-                .orElseThrow(() -> new BadRequestException("Dinosaur with id " + dinoId + " does not exist."));
+                .orElseThrow(() -> new BadRequestException("Dinosaur with id " + dinoId + " does not exist"));
 
-        if (files.size() > IMAGES_MAX_NUM) throw new BadRequestException("Maximum number of files should be 2.");
+        if (files.size() > IMAGES_MAX_NUM) throw new BadRequestException("Maximum number of files should be 2");
 
         if (dinosaur.getImages().size() == IMAGES_MAX_NUM) throw new BadRequestException("This dinosaur has already " +
-                "2 images.");
+                "2 images");
 
         if (dinosaur.getImages().size() + files.size() > IMAGES_MAX_NUM)
-            throw new BadRequestException("This dinosaur has already 1 image and can accept only 1 more.");
+            throw new BadRequestException("This dinosaur has already 1 image and can accept only 1 more");
 
         List<Image> imagesToAdd = Utils.buildImages(files);
         imageRepository.saveAll(imagesToAdd
@@ -50,15 +50,15 @@ public class ImageServiceImpl implements ImageService {
                 .peek(image -> image.setDinosaur(dinosaur))
                 .toList());
 
-        log.info("Images were successfully saved.");
+        log.info("Images were successfully saved for Dinosaur " + dinosaur.getName());
     }
 
     @Override
     public void delete(Long id) {
 
-        Image image = imageRepository.findById(id).orElseThrow(() -> new BadRequestException("Image was not found."));
+        Image image = imageRepository.findById(id).orElseThrow(() -> new BadRequestException("Image was not found"));
 
         imageRepository.delete(image);
-        log.info("Image with id " + id + " was deleted.");
+        log.info("Image with id " + id + " was deleted");
     }
 }

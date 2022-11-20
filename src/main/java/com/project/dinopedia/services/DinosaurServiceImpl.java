@@ -4,6 +4,7 @@ import com.project.dinopedia.dtos.DinosaurDto;
 import com.project.dinopedia.dtos.DinosaurRequestDto;
 import com.project.dinopedia.entities.Dinosaur;
 import com.project.dinopedia.enums.EatingClass;
+import com.project.dinopedia.enums.Period;
 import com.project.dinopedia.enums.Size;
 import com.project.dinopedia.exceptions.BadRequestException;
 import com.project.dinopedia.mappers.DinosaurMapper;
@@ -43,10 +44,15 @@ public class DinosaurServiceImpl implements DinosaurService {
 
         Dinosaur dinosaur = dinosaurMapper.dinosaurRequestDtoToDinosaur(dinosaurRequestDto);
 
-        if (dinosaurRequestDto.getImages().size() > IMAGES_MAX_NUM)
-            throw new BadRequestException("Maximum number of files is 2");
+        if (!CollectionUtils.isEmpty(dinosaurRequestDto.getImages())) {
+            if (dinosaurRequestDto.getImages().size() > IMAGES_MAX_NUM)
+                throw new BadRequestException("Maximum number of files is 2");
+            dinosaur.setImages(Utils.buildImages(dinosaurRequestDto.getImages()));
+            log.info("Dinosaur Images were added");
+        } else {
+            log.info("Save new Dinosaur request had EMPTY images list");
+        }
 
-        dinosaur.setImages(Utils.buildImages(dinosaurRequestDto.getImages()));
         DinosaurDto dinosaurDto = dinosaurMapper.dinosaurToDinosaurDto(dinosaurRepository.save(dinosaur));
         log.info("New Dinosaur " + dinosaur.getName() + " was saved successfully");
         return dinosaurDto;
@@ -75,7 +81,7 @@ public class DinosaurServiceImpl implements DinosaurService {
         Dinosaur dinosaur = dinosaurRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Dinosaur not found"));
         dinosaurRepository.delete(dinosaur);
-        log.info("Dinosaur " + dinosaur.getName() + " was deleted successfully.");
+        log.info("Dinosaur " + dinosaur.getName() + " was deleted successfully");
     }
 
     @Override
@@ -90,14 +96,14 @@ public class DinosaurServiceImpl implements DinosaurService {
     public List<byte[]> getDinosaurImages(String name) {
 
         Dinosaur dinosaur = dinosaurRepository.findByName(name)
-                .orElseThrow(() -> new BadRequestException("Dinosaur not found."));
+                .orElseThrow(() -> new BadRequestException("Dinosaur not found"));
 
         if (!CollectionUtils.isEmpty(dinosaur.getImages())) {
             return dinosaur.getImages().stream()
                     .map(image -> Utils.decompressImage(image.getImageData()))
                     .collect(Collectors.toList());
         } else
-            throw new BadRequestException("Oops! This dinosaur has no associated images.");
+            throw new BadRequestException("Oops! This dinosaur has no associated images");
     }
 
     @Override
@@ -116,8 +122,8 @@ public class DinosaurServiceImpl implements DinosaurService {
 
     @Override
     public List<String> getDinosaurPeriods() {
-        return Arrays.stream(Size.values())
-                .map(Size::getLabel)
+        return Arrays.stream(Period.values())
+                .map(Period::getLabel)
                 .collect(Collectors.toList());
     }
 
@@ -130,7 +136,7 @@ public class DinosaurServiceImpl implements DinosaurService {
                 .map(dinosaur -> dinosaurMapper.dinosaurToDinosaurDto(dinosaur))
                 .toList();
 
-        log.info("Found all dinosaurs successfully.");
+        log.info("Found all dinosaurs successfully");
         return new PageImpl<>(dinosaurs, pageable, total);
     }
 }

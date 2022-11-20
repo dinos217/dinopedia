@@ -31,7 +31,7 @@ public class Utils {
             }
             return dinoImages;
         } else
-            throw new BadRequestException("List of images is empty.");
+            throw new BadRequestException("List of images is empty");
     }
 
     public static byte[] compressImage(byte[] data) {

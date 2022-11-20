@@ -75,6 +75,6 @@ public class DinosaurController {
     @GetMapping(value = "/periods")
     ResponseEntity<List<String>> getAllPeriods() {
         log.info("Started finding all dinosaur periods...");
-        return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.getDinosaurSizes());
+        return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.getDinosaurPeriods());
     }
 }

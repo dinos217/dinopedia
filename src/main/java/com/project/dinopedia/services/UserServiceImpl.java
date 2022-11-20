@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
     public List<DinosaurDto> findUserFavourites(String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new BadRequestException("User " + username + " does not exist in database."));
+                .orElseThrow(() -> new BadRequestException("User " + username + " does not exist in database"));
 
         if (!CollectionUtils.isEmpty(user.getLikes())) {
             List<Dinosaur> userFavourites = user.getLikes().stream().map(Vote::getDinosaur).toList();
             return userFavourites.stream().map(dinosaur -> dinosaurMapper.dinosaurToDinosaurDto(dinosaur)).toList();
         } else
-            throw new BadRequestException("User " + username + " has not liked any dinosaurs yet.");
+            throw new BadRequestException("User " + username + " has not liked any dinosaurs yet");
     }
 }
