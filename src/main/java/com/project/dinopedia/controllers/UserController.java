@@ -24,12 +24,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
-        log.info("Started saving new user " + userDto.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).body(userService.save(userDto));
-    }
-
     @GetMapping(value = "/{username}/favourites")
     ResponseEntity<List<DinosaurDto>> getUserFavourites(@PathVariable String username) {
         log.info("Started getting user's " + username + " favourite dinosaurs...");

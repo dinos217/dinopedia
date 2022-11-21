@@ -23,15 +23,16 @@ public class User implements Serializable {
     @Column(name = "username", unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
     @Column(name = "date_created")
     private LocalDateTime dateCreated;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

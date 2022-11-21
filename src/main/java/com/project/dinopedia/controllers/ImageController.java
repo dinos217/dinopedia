@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/images")
+@RequestMapping(value = "/image")
 @Slf4j
 @EnableWebSecurity
 public class ImageController {
@@ -26,8 +26,7 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping(value = "/add-to-dinosaur", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/add-to-dinosaur", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     ResponseEntity<String> addImagesToDinosaur(@RequestParam Long dinoId,
                                                @RequestPart(name = "images") List<MultipartFile> images) {
         log.info("Started saving images to Dinosaur " + dinoId);

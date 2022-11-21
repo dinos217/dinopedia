@@ -1,30 +1,58 @@
 package com.project.dinopedia.configuration;
 
+import com.project.dinopedia.services.DinopediaUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private CustomAuthenticationProvider customAuthenticationProvider;
+    private DinopediaUserDetailsService dinopediaUserDetailsService;
 
-//    @Autowired
-//    public void configAuthentication(AuthenticationManagerBuilder auth) {
-//        auth.authenticationProvider(customAuthenticationProvider);
-//    }
+    @Autowired
+    public SecurityConfig(DinopediaUserDetailsService dinopediaUserDetailsService) {
+        this.dinopediaUserDetailsService = dinopediaUserDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and()
+
+        http
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests().anyRequest().authenticated();
+                .authorizeRequests()
+                .antMatchers("/register", "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/dinosaur").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/dinosaur/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/image/add-to-dinosaur").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/image/{id}").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic(Customizer.withDefaults());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(dinopediaUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
+
