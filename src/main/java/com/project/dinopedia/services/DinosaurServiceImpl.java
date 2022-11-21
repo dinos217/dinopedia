@@ -96,7 +96,6 @@ public class DinosaurServiceImpl implements DinosaurService {
     public Page<DinosaurDto> findAll(Pageable pageable) {
 
         Page<Dinosaur> allDinosaurs = dinosaurRepository.findAll(pageable);
-
         return buildResponseListPaged(pageable, allDinosaurs);
     }
 

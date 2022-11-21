@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "dinosaur")
+@Table(name = "dinosaurs")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,12 +32,10 @@ public class Dinosaur implements Serializable {
     @Column(name = "size")
     private String size;
 
-    @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
-    @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "dinosaur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> likes = new ArrayList<>();

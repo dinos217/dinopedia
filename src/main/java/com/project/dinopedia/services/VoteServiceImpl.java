@@ -54,6 +54,7 @@ public class VoteServiceImpl implements VoteService {
         voteDto.setId(vote.getId());
         voteDto.setDinosaurName(vote.getDinosaur().getName());
         voteDto.setUsername(vote.getUser().getUsername());
+        voteDto.setLike(vote.getLike());
         return voteDto;
     }
 }

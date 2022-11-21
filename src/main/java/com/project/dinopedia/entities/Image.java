@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "image")
+@Table(name = "images")
 @Getter
 @Setter
 @NoArgsConstructor

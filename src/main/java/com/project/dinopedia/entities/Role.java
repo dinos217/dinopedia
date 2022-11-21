@@ -1,5 +1,6 @@
 package com.project.dinopedia.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "`role`")
+@Table(name = "`roles`")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +23,7 @@ public class Role implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<User> users = new ArrayList<>();
 }
