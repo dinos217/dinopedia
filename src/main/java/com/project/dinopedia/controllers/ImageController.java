@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/images")
 @Slf4j
+@EnableWebSecurity
 public class ImageController {
 
     private ImageService imageService;
@@ -24,6 +27,7 @@ public class ImageController {
     }
 
     @PostMapping(value = "/add-to-dinosaur", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<String> addImagesToDinosaur(@RequestParam Long dinoId,
                                                @RequestPart(name = "images") List<MultipartFile> images) {
         log.info("Started saving images to Dinosaur " + dinoId);
