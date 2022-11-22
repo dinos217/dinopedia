@@ -17,9 +17,13 @@ import java.util.List;
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "description")
     private String description;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
+    List<User> users;
 }

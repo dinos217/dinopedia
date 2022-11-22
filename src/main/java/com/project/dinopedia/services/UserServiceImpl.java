@@ -7,6 +7,7 @@ import com.project.dinopedia.entities.Role;
 import com.project.dinopedia.entities.User;
 import com.project.dinopedia.entities.Vote;
 import com.project.dinopedia.exceptions.BadRequestException;
+import com.project.dinopedia.exceptions.InvalidRequestException;
 import com.project.dinopedia.mappers.DinosaurMapper;
 import com.project.dinopedia.mappers.UserMapper;
 import com.project.dinopedia.repositories.UserRepository;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto save(UserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new InvalidRequestException("Username " + userDto.getUsername() + " already exists.");
+        }
         User user = userMapper.userDtoToUser(userDto);
         user.setDateCreated(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
