@@ -3,7 +3,7 @@ A Spring Boot project that demonstrates a plat a social sharing platform where u
 It is written using Java 17 and the services are exposed with a REST API.
 
 ### Get the application up & running 
-Open your IDE and run maven goals clean and package (skip tests if you like). Then from the terminal of you IDE or from a terminal window in the directory of Dinopedia (where the docker-compose file exists), run the command `docker-compose up`. Now you can access the endpoints on your `localhost:8080`.
+Open your IDE and run maven goals `clean` and `package` (skip tests if you like). Then from the terminal of your IDE or from a terminal window in the directory of Dinopedia (where the docker-compose file exists), run the command `docker-compose up`. Now you can access the endpoints on your `localhost:8080`.
 
 ## Understanding and Testing the application
 The documentation and the endpoints collection were exported from Postman. 
