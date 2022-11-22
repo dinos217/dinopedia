@@ -10,4 +10,5 @@ There run the command `docker-compose up` and now the application listens to you
 ## Understanding and Testing the application
 The documentation and the endpoints collection were exported from Postman. 
 - Here you may find the [Documentation](https://documenter.getpostman.com/view/7555836/VV4uyyGB#1e052ea9-8564-4e63-8050-9d1951581b93)
-- and the [Postman Collection](https://github.com/dinos217/movierama/files/9492088/movierama.endpoints.postman_collection.zip)
+- and the [Postman Collection](https://github.com/dinos217/dinopedia/files/10071248/Dinopedia.Endpoints.postman_collection.zip)
+
