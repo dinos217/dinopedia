@@ -20,7 +20,7 @@ public class DinopediaExceptionHandler {
 
         log.warn("CONFLICT --> " + e.getMessage());
 
-        DinopediaApiMessage response = buildMovieramaErrorMessage(e, HttpStatus.CONFLICT);
+        DinopediaApiMessage response = buildDinopediaErrorMessage(e, HttpStatus.CONFLICT);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -31,11 +31,11 @@ public class DinopediaExceptionHandler {
 
         log.warn("ERROR --> " + e.getMessage());
 
-        DinopediaApiMessage response = buildMovieramaErrorMessage(e, HttpStatus.BAD_REQUEST);
+        DinopediaApiMessage response = buildDinopediaErrorMessage(e, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    private DinopediaApiMessage buildMovieramaErrorMessage(RuntimeException e, HttpStatus status) {
+    private DinopediaApiMessage buildDinopediaErrorMessage(RuntimeException e, HttpStatus status) {
         DinopediaApiMessage response = new DinopediaApiMessage();
         response.setStatus(status);
         response.setStatusCode(status.value());
