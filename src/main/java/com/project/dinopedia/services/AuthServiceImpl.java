@@ -28,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
                 loginRequestDto.getUsername(), loginRequestDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        log.info("SUCCESS: User '" + loginRequestDto.getUsername() + "' logged in successfully");
+        log.info("SUCCESS: User: " + loginRequestDto.getUsername() +
+                authentication.getAuthorities() + " logged in successfully");
     }
 }
