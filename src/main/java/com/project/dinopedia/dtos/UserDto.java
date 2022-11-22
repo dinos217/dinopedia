@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -16,6 +15,6 @@ public class UserDto {
     private String username;
     private String password;
     private LocalDateTime dateCreated;
-    private Set<Role> roles;
+    private List<Role> roles;
     private List<VoteDto> likes;
 }

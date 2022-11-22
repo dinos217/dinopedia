@@ -33,7 +33,6 @@ public class DinosaurController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<DinosaurDto> save(@RequestPart(name = "dinosaurRequestDto") DinosaurRequestDto dinosaurRequestDto,
                                      @RequestPart(name = "images", required = false) List<MultipartFile> images) {
         log.info("Started saving new Dinosaur...");
@@ -41,14 +40,12 @@ public class DinosaurController {
     }
 
     @PutMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<DinosaurDto> update(@RequestBody DinosaurDto dinosaurDto) {
         log.info("Started updating Dinosaur...");
         return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.update(dinosaurDto));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<String> delete(@PathVariable Long id) {
         log.info("Started deleting dinosaur...");
         dinosaurService.delete(id);

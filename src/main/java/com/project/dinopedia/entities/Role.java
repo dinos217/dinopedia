@@ -17,7 +17,7 @@ import java.util.List;
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "description")
@@ -25,5 +25,5 @@ public class Role implements Serializable {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+    List<User> users;
 }
