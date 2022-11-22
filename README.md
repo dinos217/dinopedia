@@ -10,6 +10,6 @@ The documentation and the endpoints collection were exported from Postman.
 - Here you may find the [Documentation](https://documenter.getpostman.com/view/7555836/2s8YsnWb3Y)
 - and the [Postman Collection](https://github.com/dinos217/dinopedia/files/10071248/Dinopedia.Endpoints.postman_collection.zip)
 
-### Tip: 
+### Tip
 First things first: Create a user through the register endpoint you will find in Documentation (preferably with the role ADMIN) so you can access all the endpoints available.
 
