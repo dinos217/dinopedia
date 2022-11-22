@@ -12,6 +12,4 @@ import java.util.List;
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     Boolean existsByUserAndDinosaur(User user, Dinosaur dinosaur);
-
-    List<Vote> findAllByUser(User user);
 }

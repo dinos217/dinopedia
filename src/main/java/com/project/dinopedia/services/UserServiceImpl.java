@@ -3,7 +3,6 @@ package com.project.dinopedia.services;
 import com.project.dinopedia.dtos.DinosaurDto;
 import com.project.dinopedia.dtos.UserDto;
 import com.project.dinopedia.entities.Dinosaur;
-import com.project.dinopedia.entities.Role;
 import com.project.dinopedia.entities.User;
 import com.project.dinopedia.entities.Vote;
 import com.project.dinopedia.exceptions.BadRequestException;
@@ -21,7 +20,6 @@ import org.springframework.util.CollectionUtils;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
